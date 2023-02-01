@@ -2,7 +2,7 @@ import Main from "./Main";
 
 const App = () => {
   return (
-    <div className="test">
+    <div className="container is-widescreen">
       <Main />
     </div>
   );
