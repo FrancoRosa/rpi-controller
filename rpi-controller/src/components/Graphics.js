@@ -27,10 +27,6 @@ export const options = {
     legend: {
       position: "top",
     },
-    title: {
-      display: true,
-      text: "Chart.js Line Chart",
-    },
   },
 };
 
@@ -40,7 +36,7 @@ export const data = {
   labels,
   datasets: [
     {
-      label: "SetPoint",
+      label: "Set-point",
       data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -55,7 +51,7 @@ export const data = {
 };
 
 const Graphics = () => {
-  return <Line options={options} data={data} />;
+  return <Line options={options} data={data} style={{ padding: "0.5em" }} />;
 };
 
 export default Graphics;
