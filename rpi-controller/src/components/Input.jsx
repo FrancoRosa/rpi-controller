@@ -1,14 +1,14 @@
-const Input = ({ title, input, setInput }) => {
+const Input = ({ title, input, setInput, step = 1 }) => {
   const handleInput = (e) => {
     setInput(e.target.value);
   };
 
   const handleUp = () => {
-    setInput((i) => i + 1);
+    setInput((i) => i + step);
   };
 
   const handleDown = () => {
-    setInput((i) => i - 1);
+    setInput((i) => i - step);
   };
 
   return (
@@ -31,9 +31,11 @@ const Input = ({ title, input, setInput }) => {
         <input
           className="input is-rounded is-small"
           placeholder="0.0"
+          step={step}
           type="number"
           value={input}
           onChange={handleInput}
+          style={{ textAlign: "center" }}
         />
         <button
           className="button is-primary is-outlined is-rounded is-small"

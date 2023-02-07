@@ -6,13 +6,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { socket, startControl, stopControl } from "../js/api";
+import useLocalStorage from "../js/hooks";
 import Button from "./Button";
 import Graphics from "./Graphics";
 import Input from "./Input";
 
-const Main = () => {
-  const [time, setTime] = useState(0);
-  const [target, setTarget] = useState(0);
+const Main = ({ tab, setTab }) => {
+  const [time, setTime] = useLocalStorage("time", 0);
+  const [target, setTarget] = useLocalStorage("target", 0);
   const startHandler = (time, setpoint) => {
     startControl(time, setpoint);
   };
@@ -32,12 +33,11 @@ const Main = () => {
 
   return (
     <div
-      className=""
       style={{
         height: "100vh",
         padding: "0.5em",
         margin: 0,
-        display: "flex",
+        display: tab === "main" ? "flex" : "none",
         justifyContent: "space-between",
       }}
     >
@@ -68,14 +68,14 @@ const Main = () => {
         <div style={{ display: "flex", flexDirection: "column", gap: "1em" }}>
           <Button
             title="Calibrate"
-            handler={() => console.log("cal")}
+            handler={() => setTab("download")}
             icon={faRuler}
             color="is-info"
           />
 
           <Button
             title="Download"
-            handler={() => console.log("dontload")}
+            handler={() => setTab("download")}
             icon={faDownload}
             color="is-info"
           />
@@ -93,8 +93,13 @@ const Main = () => {
       >
         <Graphics />
         <div style={{ display: "flex", gap: "2rem", padding: "0 1em" }}>
-          <Input title="Set-point" input={target} setInput={setTarget} />
-          <Input title="Time" input={time} setInput={setTime} />
+          <Input
+            title="Target (°C)"
+            input={target}
+            setInput={setTarget}
+            step={0.1}
+          />
+          <Input title="Time (s)" input={time} setInput={setTime} />
         </div>
       </div>
     </div>

@@ -1,40 +1,15 @@
 
-"""
-    Hardware layout 
-                3V3  (1) (2)  5V    
-              GPIO2  (3) (4)  5V    
-              GPIO3  (5) (6)  GND   
-              GPIO4  (7) (8)  GPIO14
-                GND  (9) (10) GPIO15
-             GPIO17 (11) (12) GPIO18  
-             GPIO27 (13) (14) GND  
-             GPIO22 (15) (16) GPIO23  
-                3V3 (17) (18) GPIO24  
-             GPIO10 (19) (20) GND   
-              GPIO9 (21) (22) GPIO25
-             GPIO11 (23) (24) GPIO8 
-                GND (25) (26) GPIO7 
-              GPIO0 (27) (28) GPIO1 
-              GPIO5 (29) (30) GND   
-              GPIO6 (31) (32) GPIO12  
-             GPIO13 (33) (34) GND   
-             GPIO19 (35) (36) GPIO16
-             GPIO26 (37) (38) GPIO20
-                GND (39) (40) GPIO21
-"""
 
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request
 from flask_socketio import SocketIO, send
 from flask_cors import CORS
-from time import sleep, time
+from time import sleep, ctime
 from threading import Thread
-from signal import pause
-import json
+from enum import Enum
+from helpers import response
+from hardware import read_temp
 import logging
-from helpers import is_rpi
 
-if is_rpi:
-    from gpiozero import LED, Button
 
 app = Flask(__name__)
 log = logging.getLogger('werkzeug')
@@ -46,18 +21,71 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 port = 9999
 
 
-def send_test():
+st = Enum('st', ["run", "pause", "stop"])
+state = st.stop
+recordings = []
+time = 0
+setpoint = 100
+
+
+def process():
+    global state, recordings, time, setpoint
+
+    time_count = 0
+    count = 0
+
     while True:
-        socketio.send("test")
-        sleep(3)
+        if state == st.stop:
+            print("process stop")
+            recordings = []
+            count = 0
+
+        elif state == st.pause:
+            print("process pause")
+
+        elif state == st.run:
+            count += 1
+            record = [count, ctime(), setpoint, read_temp()]
+            recordings.append(record)
+            print(record)
+            if time > time_count:
+                time_count += 1
+            else:
+                state = st.stop
+
+        sleep(1)
 
 
-Thread(target=send_test, args=[]).start()
+Thread(target=process, args=[]).start()
 
 
 @app.route('/')
 def index():
     return "... control server running on port %s" % port
+
+
+@app.route('/start', methods=["POST"])
+def start():
+    global state, time, setpoint
+    payload = request.get_json()
+    time = float(payload["time"])
+    setpoint = float(payload["setpoint"])
+    state = st.run
+    return response({"message": "ok"})
+
+
+@app.route('/stop', methods=["POST"])
+def stop():
+    global state
+    state = st.stop
+    return response({"message": "ok"})
+
+
+@app.route('/pause', methods=["POST"])
+def pause():
+    global state
+    state = st.pause
+    return response({"message": "ok"})
 
 
 @socketio.on('message')
