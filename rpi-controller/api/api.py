@@ -6,7 +6,7 @@ from flask_cors import CORS
 from time import sleep, ctime
 from threading import Thread
 from enum import Enum
-from helpers import response
+from helpers import response, usb, save_file
 from hardware import read_temp
 import logging
 
@@ -86,6 +86,18 @@ def pause():
     global state
     state = st.pause
     return response({"message": "ok"})
+
+
+@app.route('/pendrive')
+def pendrive():
+    return response({"devices": usb()})
+
+
+@app.route('/save', methods=["POST"])
+def save():
+    filename = request.get_json()["filename"]
+    result = save_file(filename, recordings)
+    return response({"message": "ok" if result else "fail"})
 
 
 @socketio.on('message')

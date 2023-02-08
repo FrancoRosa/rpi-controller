@@ -20,8 +20,15 @@ const Input = ({ title, input, setInput, step = 1 }) => {
         alignItems: "center",
       }}
     >
-      <h3 className="is-header">{title}</h3>
-      <div style={{ display: "flex", gap: "0.5rem" }}>
+      <h3 className="">{title}</h3>
+      <div
+        style={{
+          display: "flex",
+          gap: "0.5rem",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <button
           className="button is-primary is-outlined is-rounded is-small"
           onClick={handleUp}

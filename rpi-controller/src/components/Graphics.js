@@ -36,13 +36,13 @@ export const data = {
   labels,
   datasets: [
     {
-      label: "Set-point",
+      label: "Target",
       data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
-      label: "Measurements",
+      label: "Value",
       data: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
       borderColor: "rgb(99, 255, 132)",
       backgroundColor: "rgba(99, 255, 132, 0.5)",

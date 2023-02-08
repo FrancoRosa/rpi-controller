@@ -25,3 +25,17 @@ export const pauseControl = async () => {
   const response = await axios.post(url, {});
   return response.data;
 };
+
+export const saveRecords = async (fileName) => {
+  console.log("... save records");
+  const url = `${host}/save`;
+  const response = await axios.post(url, { fileName });
+  return response.data;
+};
+
+export const checkPendrive = async () => {
+  console.log("... check pendrive");
+  const url = `${host}/pendrive`;
+  const response = await axios.get(url);
+  return response.data;
+};

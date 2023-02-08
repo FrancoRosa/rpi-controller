@@ -7,9 +7,9 @@ const App = () => {
   const [tab, setTab] = useState("main");
   return (
     <div className="container is-widescreen">
-      <Main tab={tab} setTab={setTab} />
-      <Calibrate tab={tab} setTab={setTab} />
-      <Download tab={tab} setTab={setTab} />
+      {tab === "main" && <Main tab={tab} setTab={setTab} />}
+      {tab === "calibrate" && <Calibrate tab={tab} setTab={setTab} />}
+      {tab === "download" && <Download tab={tab} setTab={setTab} />}
     </div>
   );
 };

@@ -1,0 +1,10 @@
+.input {
+  background-color: transparent;
+  border: 2px solid #375a7f;
+  color: rgb(29, 160, 248);
+  cursor: pointer;
+  height: 2em;
+  font-size: 1em !important;
+  font-weight: bold;
+  letter-spacing: 2px;
+}

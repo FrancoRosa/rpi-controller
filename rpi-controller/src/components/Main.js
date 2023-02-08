@@ -4,14 +4,14 @@ import {
   faRuler,
   faStop,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { socket, startControl, stopControl } from "../js/api";
 import useLocalStorage from "../js/hooks";
 import Button from "./Button";
 import Graphics from "./Graphics";
 import Input from "./Input";
 
-const Main = ({ tab, setTab }) => {
+const Main = ({ setTab }) => {
   const [time, setTime] = useLocalStorage("time", 0);
   const [target, setTarget] = useLocalStorage("target", 0);
   const startHandler = (time, setpoint) => {
@@ -37,7 +37,7 @@ const Main = ({ tab, setTab }) => {
         height: "100vh",
         padding: "0.5em",
         margin: 0,
-        display: tab === "main" ? "flex" : "none",
+        display: "flex",
         justifyContent: "space-between",
       }}
     >
@@ -68,7 +68,7 @@ const Main = ({ tab, setTab }) => {
         <div style={{ display: "flex", flexDirection: "column", gap: "1em" }}>
           <Button
             title="Calibrate"
-            handler={() => setTab("download")}
+            handler={() => setTab("calibrate")}
             icon={faRuler}
             color="is-info"
           />
